@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".ConfigDeviceActivity"
+    tools:layout_editor_absoluteX="0dp"
+
+    tools:layout_editor_absoluteY="0dp">
+
+    <EditText
+        android:id="@+id/edit_ssid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ssid"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_wifi_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="wifi password"
+        android:inputType="textPassword" />
+
+    <ImageView
+        android:id="@+id/img_qrcode_display"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintDimensionRatio="H,1:1" />
+</LinearLayout>
