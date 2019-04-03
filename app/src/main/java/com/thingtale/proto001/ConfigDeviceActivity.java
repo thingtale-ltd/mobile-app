@@ -93,7 +93,7 @@ public class ConfigDeviceActivity extends AppCompatActivity {
             imgView.setImageBitmap(qrCodeBitmap);
         } catch (JSONException e) {
             Log.wtf(TAG, e);
-            Toast.makeText(getApplicationContext(), "QR Code could not be build", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "QR Code could not be built", Toast.LENGTH_SHORT).show();
         }
     }
 }
