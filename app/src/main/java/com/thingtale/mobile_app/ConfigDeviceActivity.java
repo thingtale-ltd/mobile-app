@@ -1,4 +1,4 @@
-package com.thingtale.proto001;
+package com.thingtale.mobile_app;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;

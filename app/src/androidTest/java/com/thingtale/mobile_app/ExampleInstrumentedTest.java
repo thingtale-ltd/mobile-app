@@ -1,4 +1,4 @@
-package com.thingtale.proto001;
+package com.thingtale.mobile_app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

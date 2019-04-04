@@ -1,4 +1,4 @@
-package com.thingtale.proto001;
+package com.thingtale.mobile_app;
 
 import android.content.Intent;
 import android.os.Bundle;
