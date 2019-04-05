@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.thingtale.proto001"
+        applicationId "com.thingtale.mobile_app"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
