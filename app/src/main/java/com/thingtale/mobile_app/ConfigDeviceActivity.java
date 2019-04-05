@@ -22,12 +22,11 @@ public class ConfigDeviceActivity extends AppCompatActivity {
 
     public static String serializeConfig(String ssid, String password) throws JSONException {
         JSONObject jsonMain = new JSONObject();
-        jsonMain.put("type", "config");
 
-        JSONObject jsonConfig = new JSONObject();
-        jsonConfig.put("ssid", ssid);
-        jsonConfig.put("password", password);
-        jsonMain.put("config", jsonConfig);
+        jsonMain.put("type", "wifi-config");
+
+        jsonMain.put("ssid", ssid);
+        jsonMain.put("key", password);
 
         return jsonMain.toString();
     }
