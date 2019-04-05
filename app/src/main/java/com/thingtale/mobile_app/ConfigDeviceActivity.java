@@ -39,7 +39,7 @@ public class ConfigDeviceActivity extends AppCompatActivity {
         setTitle(R.string.title_config_device);
 
         // handle fields change
-        ((EditText) findViewById(R.id.edit_ssid)).addTextChangedListener(new TextWatcher() {
+        ((EditText) findViewById(R.id.et_ssid)).addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 updateQRCode();
@@ -56,7 +56,7 @@ public class ConfigDeviceActivity extends AppCompatActivity {
             }
         });
 
-        ((EditText) findViewById(R.id.edit_wifi_key)).addTextChangedListener(new TextWatcher() {
+        ((EditText) findViewById(R.id.et_wifi_key)).addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 updateQRCode();
@@ -75,8 +75,8 @@ public class ConfigDeviceActivity extends AppCompatActivity {
     }
 
     protected void updateQRCode() {
-        final String ssid = ((EditText) findViewById(R.id.edit_ssid)).getText().toString();
-        final String password = ((EditText) findViewById(R.id.edit_wifi_key)).getText().toString();
+        final String ssid = ((EditText) findViewById(R.id.et_ssid)).getText().toString();
+        final String password = ((EditText) findViewById(R.id.et_wifi_key)).getText().toString();
 
         try {
             final String configStr = serializeConfig(ssid, password);

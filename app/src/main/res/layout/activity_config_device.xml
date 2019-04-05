@@ -13,20 +13,27 @@
     tools:layout_editor_absoluteY="0dp">
 
     <EditText
-        android:id="@+id/edit_ssid"
+        android:id="@+id/et_ssid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="ssid"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/edit_wifi_key"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/et_wifi_key_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="wifi password"
-        android:inputType="textPassword" />
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_wifi_key"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="wifi password"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
     <ImageView
         android:id="@+id/img_qrcode_display"
