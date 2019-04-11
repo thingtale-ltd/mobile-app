@@ -18,7 +18,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -85,7 +84,10 @@ public class ConfigDeviceActivity extends AppCompatActivity {
                     @Override
                     public void onReceive(Context context, Intent intent) {
                         wifiScanResultList = wifiManager.getScanResults();
-                        ((Button) findViewById(R.id.btn_scan_wifi)).setEnabled(true);
+
+                        findViewById(R.id.btn_scan_wifi).setEnabled(true);
+
+                        // trigger another scan
                         wifiManager.startScan();
                     }
                 },
@@ -94,14 +96,11 @@ public class ConfigDeviceActivity extends AppCompatActivity {
         wifiManager.startScan();
 
         // handle "scan wifi button"
-        ((Button) findViewById(R.id.btn_scan_wifi)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_scan_wifi).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                 * Wifi needs to be enabled
-                 */
-
-                // if wifi is disabled, propose to activate it
+                // Wifi needs to be enabled
+                // if it is disabled, propose to activate it
                 if (!wifiManager.isWifiEnabled()) {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
@@ -109,7 +108,10 @@ public class ConfigDeviceActivity extends AppCompatActivity {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     wifiManager.setWifiEnabled(true);
-                                    Toast.makeText(getApplicationContext(), getString(R.string.scanning_wifi_AP), Toast.LENGTH_LONG).show();
+
+                                    findViewById(R.id.btn_scan_wifi).setEnabled(false);
+                                    Toast.makeText(getApplicationContext(), getString(R.string.wait_scanning_wifi_AP), Toast.LENGTH_LONG).show();
+
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -129,7 +131,8 @@ public class ConfigDeviceActivity extends AppCompatActivity {
                 }
 
                 if (wifiScanResultList == null) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.scanning_wifi_AP), Toast.LENGTH_LONG).show();
+                    findViewById(R.id.btn_scan_wifi).setEnabled(false);
+                    Toast.makeText(getApplicationContext(), getString(R.string.wait_scanning_wifi_AP), Toast.LENGTH_LONG).show();
                 } else {
                     final String[] ssids = new String[wifiScanResultList.size()];
                     for (int i = 0; i < ssids.length; i++) {
