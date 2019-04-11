@@ -18,8 +18,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import net.glxn.qrgen.android.QRCode;
@@ -36,6 +38,8 @@ public class ConfigDeviceActivity extends AppCompatActivity {
 
     private WifiManager wifiManager;
     private List<ScanResult> wifiScanResultList;
+
+    private boolean userRequestedScan = false;
 
     public static String serializeConfig(String ssid, String key_mgmt, String password) throws JSONException {
         JSONObject jsonMain = new JSONObject();
@@ -57,21 +61,11 @@ public class ConfigDeviceActivity extends AppCompatActivity {
         setTitle(R.string.title_config_device);
 
         // request permissions
-        int permission = ActivityCompat.checkSelfPermission(ConfigDeviceActivity.this, Manifest.permission.ACCESS_WIFI_STATE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.w(TAG, "wifi access permission not granted");
-            // We don't have permission so prompt the user
-            int ACCESS_WIFI_STATE = 1;
-            ActivityCompat.requestPermissions(ConfigDeviceActivity.this,
-                    new String[]{Manifest.permission.ACCESS_WIFI_STATE},
-                    ACCESS_WIFI_STATE);
-        }
-
-        permission = ActivityCompat.checkSelfPermission(ConfigDeviceActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        final int permission = ActivityCompat.checkSelfPermission(ConfigDeviceActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             Log.w(TAG, "coarse location access permission not granted");
             // We don't have permission so prompt the user
-            int ACCESS_COARSE_LOCATION = 2;
+            int ACCESS_COARSE_LOCATION = 1;
             ActivityCompat.requestPermissions(ConfigDeviceActivity.this,
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     ACCESS_COARSE_LOCATION);
@@ -85,7 +79,12 @@ public class ConfigDeviceActivity extends AppCompatActivity {
                     public void onReceive(Context context, Intent intent) {
                         wifiScanResultList = wifiManager.getScanResults();
 
-                        findViewById(R.id.btn_scan_wifi).setEnabled(true);
+                        if (userRequestedScan) {
+                            userRequestedScan = false;
+                            showWifiSelectPopup(findViewById(R.id.btn_scan_wifi));
+                        }
+
+                        setWifiAccessible(true);
 
                         // trigger another scan
                         wifiManager.startScan();
@@ -109,8 +108,9 @@ public class ConfigDeviceActivity extends AppCompatActivity {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     wifiManager.setWifiEnabled(true);
 
-                                    findViewById(R.id.btn_scan_wifi).setEnabled(false);
+                                    setWifiAccessible(false);
                                     Toast.makeText(getApplicationContext(), getString(R.string.wait_scanning_wifi_AP), Toast.LENGTH_LONG).show();
+                                    userRequestedScan = true;
 
                                     break;
 
@@ -131,26 +131,11 @@ public class ConfigDeviceActivity extends AppCompatActivity {
                 }
 
                 if (wifiScanResultList == null) {
-                    findViewById(R.id.btn_scan_wifi).setEnabled(false);
+                    setWifiAccessible(false);
+                    userRequestedScan = true;
                     Toast.makeText(getApplicationContext(), getString(R.string.wait_scanning_wifi_AP), Toast.LENGTH_LONG).show();
                 } else {
-                    final String[] ssids = new String[wifiScanResultList.size()];
-                    for (int i = 0; i < ssids.length; i++) {
-                        ssids[i] = wifiScanResultList.get(i).SSID;
-                    }
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                    builder.setTitle("Wifi list");
-                    builder.setItems(ssids, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            final ScanResult sr = wifiScanResultList.get(which);
-
-                            ((EditText) findViewById(R.id.et_ssid)).setText(sr.SSID);
-                            ((EditText) findViewById(R.id.et_key_mgmt)).setText(sr.capabilities);
-                        }
-                    });
-                    builder.show();
+                    showWifiSelectPopup(v);
                 }
             }
         });
@@ -173,6 +158,39 @@ public class ConfigDeviceActivity extends AppCompatActivity {
         ((EditText) findViewById(R.id.et_ssid)).addTextChangedListener(textWatcher);
         ((EditText) findViewById(R.id.et_key_mgmt)).addTextChangedListener(textWatcher);
         ((EditText) findViewById(R.id.et_wifi_key)).addTextChangedListener(textWatcher);
+    }
+
+    private void setWifiAccessible(boolean b) {
+        final Button btnScanWifi = findViewById(R.id.btn_scan_wifi);
+        final RelativeLayout progressBarWifi = findViewById(R.id.progressbar_wifi);
+
+        if (b) {
+            progressBarWifi.setVisibility(View.GONE);
+            btnScanWifi.setVisibility(View.VISIBLE);
+        } else {
+            btnScanWifi.setVisibility(View.GONE);
+            progressBarWifi.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showWifiSelectPopup(View v) {
+        final String[] ssids = new String[wifiScanResultList.size()];
+        for (int i = 0; i < ssids.length; i++) {
+            ssids[i] = wifiScanResultList.get(i).SSID;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setTitle("Wifi list");
+        builder.setItems(ssids, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final ScanResult sr = wifiScanResultList.get(which);
+
+                ((EditText) findViewById(R.id.et_ssid)).setText(sr.SSID);
+                ((EditText) findViewById(R.id.et_key_mgmt)).setText(sr.capabilities);
+            }
+        });
+        builder.show();
     }
 
     protected void updateQRCode() {

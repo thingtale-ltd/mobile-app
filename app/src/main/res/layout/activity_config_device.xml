@@ -18,6 +18,32 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_scan_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="Wifi List" />
+
+            <RelativeLayout
+                android:id="@+id/progressbar_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -53,13 +79,6 @@
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_scan_wifi"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="Wifi List" />
-
     </LinearLayout>
 
     <ImageView
