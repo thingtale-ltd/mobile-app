@@ -200,14 +200,11 @@ public class ConfigDeviceActivity extends AppCompatActivity {
 
         try {
             final String configStr = serializeConfig(ssid, key_mgmgt, password);
-            Bitmap qrCodeBitmap = QRCode.from(configStr).bitmap();
 
-            ImageView imgView = findViewById(R.id.img_qrcode_display);
+            final ImageView imgView = findViewById(R.id.img_qrcode_display);
+            final int bitmapSize = min(imgView.getWidth(), imgView.getHeight());
 
-            // scale bitmap without interpolation
-            final int mw = imgView.getWidth();
-            final int mh = imgView.getHeight();
-            qrCodeBitmap = Bitmap.createScaledBitmap(qrCodeBitmap, min(mw, mh), min(mh, mw), false);
+            final Bitmap qrCodeBitmap = QRCode.from(configStr).withSize(bitmapSize, bitmapSize).bitmap();
 
             imgView.setImageBitmap(qrCodeBitmap);
         } catch (JSONException e) {
