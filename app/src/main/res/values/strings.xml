@@ -12,4 +12,7 @@
     <string name="action_config_device">Configure device</string>
 
     <string name="title_config_device">Device config</string>
+    <string name="wifi_needs_to_be_enabled">WiFi is disabled ... We need to enable it</string>
+    <string name="question_enable_wifi">Enable Wifi ?</string>
+    <string name="scanning_wifi_AP">Scanning WiFi access points</string>
 </resources>

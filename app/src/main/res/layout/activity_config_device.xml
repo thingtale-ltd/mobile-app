@@ -7,33 +7,61 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+
     tools:context=".ConfigDeviceActivity"
     tools:layout_editor_absoluteX="0dp"
-
     tools:layout_editor_absoluteY="0dp">
 
-    <EditText
-        android:id="@+id/et_ssid"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="ssid"
-        android:inputType="text" />
+        android:orientation="horizontal">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/et_wifi_key_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/et_wifi_key"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="wifi password"
-            android:inputType="textPassword" />
-    </android.support.design.widget.TextInputLayout>
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_ssid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="ssid"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/et_key-mgmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="key_mgmt"
+                android:inputType="text" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/et_wifi_key_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_wifi_key"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="wifi password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_scan_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Wifi List" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/img_qrcode_display"
@@ -41,4 +69,5 @@
         android:layout_height="fill_parent"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintDimensionRatio="H,1:1" />
+
 </LinearLayout>
