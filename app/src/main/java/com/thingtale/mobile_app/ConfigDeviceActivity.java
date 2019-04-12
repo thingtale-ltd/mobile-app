@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.thingtale.mobile_app.wifi.WifiInfoExtractor;
+
 import net.glxn.qrgen.android.QRCode;
 
 import org.json.JSONException;
@@ -186,8 +188,11 @@ public class ConfigDeviceActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 final ScanResult sr = wifiScanResultList.get(which);
 
+                final String keyMgmt = WifiInfoExtractor.getKeyMgmt(sr);
+
                 ((EditText) findViewById(R.id.et_ssid)).setText(sr.SSID);
                 ((EditText) findViewById(R.id.et_key_mgmt)).setText(sr.capabilities);
+                ((EditText) findViewById(R.id.et_key_mgmt)).setText(keyMgmt);
             }
         });
         builder.show();
