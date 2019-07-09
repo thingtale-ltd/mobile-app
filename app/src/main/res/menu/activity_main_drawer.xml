@@ -4,8 +4,13 @@
     tools:showIn="navigation_view">
 
     <item
-        android:id="@+id/nav_config_device"
+        android:id="@+id/nav_content_creator"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:title="@string/action_config_device" />
+        android:title="@string/title_activity_content_creator" />
+
+    <item
+        android:id="@+id/nav_new_content"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/title_activity_content_edit" />
 
 </menu>
