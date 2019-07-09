@@ -33,7 +33,7 @@ public class ContentCreatorActivity extends AppCompatActivity implements Content
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Intent intent = new Intent(ContentCreatorActivity.this, ContentEditActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 2);
 
                 return false;
             }

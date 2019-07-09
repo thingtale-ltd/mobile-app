@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -83,11 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_content_creator) {
             Intent myIntent = new Intent(MainActivity.this, ContentCreatorActivity.class);
-            MainActivity.this.startActivity(myIntent);
-        }
-
-        if (id == R.id.nav_new_content) {
-            Intent myIntent = new Intent(MainActivity.this, ContentEditActivity.class);
             MainActivity.this.startActivity(myIntent);
         }
 
