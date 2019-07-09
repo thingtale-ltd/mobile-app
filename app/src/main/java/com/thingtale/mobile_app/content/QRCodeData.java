@@ -1,5 +1,10 @@
 package com.thingtale.mobile_app.content;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
+import net.glxn.qrgen.android.QRCode;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -133,5 +138,14 @@ public class QRCodeData {
         csvResult += this.level;
 
         return csvResult;
+    }
+
+    public Bitmap getBitmap(int size) {
+        try {
+            return QRCode.from(toJson()).withSize(size, size).bitmap();
+        } catch (JSONException e) {
+            Log.wtf(TAG, e);
+            return null;
+        }
     }
 }

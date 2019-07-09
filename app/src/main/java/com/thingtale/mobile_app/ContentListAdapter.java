@@ -1,17 +1,26 @@
 package com.thingtale.mobile_app;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.thingtale.mobile_app.content.QRCodeData;
 
 import java.util.List;
+
+import static java.lang.Math.min;
 
 public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.ContentHolder> {
     private List<QRCodeData> contentList;
@@ -27,13 +36,43 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
     @NonNull
     @Override
     public ContentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LinearLayout viewInflate = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.content_recycler, parent, false);
-        ContentHolder cHolder = new ContentHolder(viewInflate);
+        final LinearLayout viewInflate = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.content_recycler, parent, false);
+        final ContentHolder cHolder = new ContentHolder(viewInflate);
+
+        cHolder.layout.findViewById(R.id.img).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final int itemPosition = (Integer) v.getTag();
+                final QRCodeData c = contentList.get(itemPosition);
+
+                final Dialog builder = new Dialog(v.getContext());
+                builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                final ImageView imageView = new ImageView(v.getContext());
+                builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                ((Activity) v.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int height = displayMetrics.heightPixels;
+                int width = displayMetrics.widthPixels;
+                final int size = min(height, width) * 100 / 50;
+                imageView.setImageBitmap(c.getBitmap(size));
+
+                builder.show();
+            }
+        });
+
         return cHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContentHolder holder, int position) {
+        // set tag for click listener
+        holder.layout.findViewById(R.id.img).setTag(position);
+
         ((TextView) holder.layout.findViewById(R.id.txt_isbn)).setText(contentList.get(position).getIsbn());
         ((TextView) holder.layout.findViewById(R.id.txt_book_name)).setText(contentList.get(position).getBookName());
         ((TextView) holder.layout.findViewById(R.id.txt_author)).setText(contentList.get(position).getAuthor());
