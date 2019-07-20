@@ -114,7 +114,7 @@ public class ContentData {
     }
 
     public String toStrID() {
-        return this.isbn + this.pageNum;
+        return this.isbn + ";" + this.pageNum;
     }
 
     public String toCSVLine() {
