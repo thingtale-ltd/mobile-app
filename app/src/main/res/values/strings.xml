@@ -19,4 +19,5 @@
     <string name="book_name">Book Name</string>
     <string name="book_isbn">Book ISBN</string>
     <string name="language">Language</string>
+    <string name="title_activity_scanner">QRCode scanner</string>
 </resources>

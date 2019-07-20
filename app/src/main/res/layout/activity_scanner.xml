@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".ScannerActivity">
+
+    <de.klimek.scanner.ScannerView
+        android:id="@+id/scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:allow_frontcamera="true"
+        app:decode_interval="500"
+        app:reticle_fraction="0.9"
+        app:use_flash="false" />
+
+</LinearLayout>

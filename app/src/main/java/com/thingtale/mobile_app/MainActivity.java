@@ -85,6 +85,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             MainActivity.this.startActivity(myIntent);
         }
 
+        if (id == R.id.nav_scanner) {
+            Intent myIntent = new Intent(MainActivity.this, ScannerActivity.class);
+            MainActivity.this.startActivity(myIntent);
+        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
