@@ -16,18 +16,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.thingtale.mobile_app.content.QRCodeData;
+import com.thingtale.mobile_app.content.ContentData;
 
 import java.util.List;
 
 import static java.lang.Math.min;
 
 public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.ContentHolder> {
-    private List<QRCodeData> contentList;
+    private List<ContentData> contentList;
     private ContentAdapterListener listener;
     private Context context;
 
-    public ContentListAdapter(List<QRCodeData> contentList, ContentAdapterListener listener, Context context) {
+    public ContentListAdapter(List<ContentData> contentList, ContentAdapterListener listener, Context context) {
         this.contentList = contentList;
         this.listener = listener;
         this.context = context;
@@ -43,7 +43,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
             @Override
             public void onClick(final View v) {
                 final int itemPosition = (Integer) v.getTag();
-                final QRCodeData c = contentList.get(itemPosition);
+                final ContentData c = contentList.get(itemPosition);
 
                 final Dialog builder = new Dialog(v.getContext());
                 builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -82,7 +82,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
         ((TextView) holder.layout.findViewById(R.id.txt_level)).setText(Integer.toString(contentList.get(position).getLevel()));
     }
 
-    public void setContentList(List<QRCodeData> contentList) {
+    public void setContentList(List<ContentData> contentList) {
         this.contentList = contentList;
         notifyDataSetChanged();
     }
@@ -93,7 +93,7 @@ public class ContentListAdapter extends RecyclerView.Adapter<ContentListAdapter.
     }
 
     public interface ContentAdapterListener {
-        void onContentSelected(QRCodeData content);
+        void onContentSelected(ContentData content);
     }
 
     public class ContentHolder extends RecyclerView.ViewHolder {

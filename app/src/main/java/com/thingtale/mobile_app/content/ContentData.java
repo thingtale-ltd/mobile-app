@@ -1,15 +1,16 @@
 package com.thingtale.mobile_app.content;
 
 import android.graphics.Bitmap;
-import android.util.Log;
+
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import net.glxn.qrgen.android.QRCode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class QRCodeData {
-    private static final String TAG = QRCodeData.class.getSimpleName();
+public class ContentData {
+    private static final String TAG = ContentData.class.getSimpleName();
 
     private String isbn;
     private String bookName;
@@ -19,10 +20,10 @@ public class QRCodeData {
     private int pageNum;
     private int level;
 
-    public QRCodeData() {
+    public ContentData() {
     }
 
-    public QRCodeData(String isbn, String bookName, String author, String language, String audioFile, int pageNum, int level) {
+    public ContentData(String isbn, String bookName, String author, String language, String audioFile, int pageNum, int level) {
         this.isbn = isbn;
         this.bookName = bookName;
         this.author = author;
@@ -32,7 +33,7 @@ public class QRCodeData {
         this.level = level;
     }
 
-    public static QRCodeData fromJson(String jsonStr) throws JSONException {
+    public static ContentData fromJson(String jsonStr) throws JSONException {
         JSONObject jsonObj = new JSONObject(jsonStr);
 
         final String isbn = jsonObj.getString("isbn");
@@ -43,17 +44,17 @@ public class QRCodeData {
         final int pageNum = jsonObj.getInt("pageNum");
         final int level = jsonObj.getInt("level");
 
-        return new QRCodeData(isbn, bookName, author, language, audioFile, pageNum, level);
+        return new ContentData(isbn, bookName, author, language, audioFile, pageNum, level);
     }
 
-    public static QRCodeData fromCSVLine(String line) {
+    public static ContentData fromCSVLine(String line) {
         String[] split = line.split(";");
 
         if (split.length != 7) {
             return null;
         }
 
-        return new QRCodeData(split[0], split[1], split[2], split[3], split[4], Integer.parseInt(split[5]), Integer.parseInt(split[6]));
+        return new ContentData(split[0], split[1], split[2], split[3], split[4], Integer.parseInt(split[5]), Integer.parseInt(split[6]));
     }
 
     public String getIsbn() {
@@ -112,18 +113,8 @@ public class QRCodeData {
         this.level = level;
     }
 
-    public String toJson() throws JSONException {
-        JSONObject jsonObj = new JSONObject();
-
-        jsonObj.put("isbn", this.isbn);
-        jsonObj.put("bookName", this.bookName);
-        jsonObj.put("author", this.author);
-        jsonObj.put("language", this.language);
-        jsonObj.put("audioFile", this.audioFile);
-        jsonObj.put("pageNum", this.pageNum);
-        jsonObj.put("level", this.level);
-
-        return jsonObj.toString();
+    public String toStrID() {
+        return this.isbn + this.pageNum;
     }
 
     public String toCSVLine() {
@@ -141,11 +132,6 @@ public class QRCodeData {
     }
 
     public Bitmap getBitmap(int size) {
-        try {
-            return QRCode.from(toJson()).withSize(size, size).bitmap();
-        } catch (JSONException e) {
-            Log.wtf(TAG, e);
-            return null;
-        }
+        return QRCode.from(toStrID()).withSize(size, size).withErrorCorrection(ErrorCorrectionLevel.H).bitmap();
     }
 }

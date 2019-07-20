@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.thingtale.mobile_app.content.ContentData;
 import com.thingtale.mobile_app.content.Database;
-import com.thingtale.mobile_app.content.QRCodeData;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ContentEditActivity extends AppCompatActivity {
 
         try {
             int idx = getIntent().getExtras().getInt("content_idx");
-            QRCodeData c = Database.load(getApplicationContext()).get(idx);
+            ContentData c = Database.load(getApplicationContext()).get(idx);
             setQRCodeData(c);
         } catch (NullPointerException e) {
             // no extra, ignoring
@@ -36,12 +36,12 @@ public class ContentEditActivity extends AppCompatActivity {
         clickButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final QRCodeData qrCodeData = getQRCodeData();
-                if (qrCodeData == null) {
+                final ContentData contentData = getQRCodeData();
+                if (contentData == null) {
                     return;
                 }
 
-                List<QRCodeData> contentList = Database.load(getApplicationContext());
+                List<ContentData> contentList = Database.load(getApplicationContext());
 
                 try {
                     int idx = getIntent().getExtras().getInt("content_idx");
@@ -61,19 +61,19 @@ public class ContentEditActivity extends AppCompatActivity {
         });
     }
 
-    private QRCodeData getQRCodeData() {
-        QRCodeData qrCodeData = new QRCodeData();
+    private ContentData getQRCodeData() {
+        ContentData contentData = new ContentData();
 
-        qrCodeData.setIsbn(((EditText) findViewById(R.id.editISBN)).getText().toString());
-        qrCodeData.setAuthor(((EditText) findViewById(R.id.editAuthor)).getText().toString());
-        qrCodeData.setBookName(((EditText) findViewById(R.id.editBookName)).getText().toString());
-        qrCodeData.setLanguage(((EditText) findViewById(R.id.editLanguage)).getText().toString());
-        qrCodeData.setAudioFile(((EditText) findViewById(R.id.editAudioFile)).getText().toString());
+        contentData.setIsbn(((EditText) findViewById(R.id.editISBN)).getText().toString());
+        contentData.setAuthor(((EditText) findViewById(R.id.editAuthor)).getText().toString());
+        contentData.setBookName(((EditText) findViewById(R.id.editBookName)).getText().toString());
+        contentData.setLanguage(((EditText) findViewById(R.id.editLanguage)).getText().toString());
+        contentData.setAudioFile(((EditText) findViewById(R.id.editAudioFile)).getText().toString());
 
         final String pageNumStr = ((EditText) findViewById(R.id.editPageNum)).getText().toString();
         try {
             final int pageNum = Integer.parseInt(pageNumStr);
-            qrCodeData.setPageNum(pageNum);
+            contentData.setPageNum(pageNum);
         } catch (NumberFormatException e) {
             Toast.makeText(getBaseContext(), "invald field: Page Number (must be a number)", Toast.LENGTH_SHORT).show();
             return null;
@@ -82,23 +82,23 @@ public class ContentEditActivity extends AppCompatActivity {
         final String levelStr = ((EditText) findViewById(R.id.editLevel)).getText().toString();
         try {
             final int level = Integer.parseInt(levelStr);
-            qrCodeData.setLevel(level);
+            contentData.setLevel(level);
         } catch (NumberFormatException e) {
             Toast.makeText(getBaseContext(), "invald field: Level (must be a number)", Toast.LENGTH_SHORT).show();
             return null;
         }
 
-        return qrCodeData;
+        return contentData;
     }
 
-    private void setQRCodeData(QRCodeData qrCodeData) {
-        ((EditText) findViewById(R.id.editISBN)).setText(qrCodeData.getIsbn());
-        ((EditText) findViewById(R.id.editAuthor)).setText(qrCodeData.getAuthor());
-        ((EditText) findViewById(R.id.editBookName)).setText(qrCodeData.getBookName());
-        ((EditText) findViewById(R.id.editLanguage)).setText(qrCodeData.getLanguage());
-        ((EditText) findViewById(R.id.editAudioFile)).setText(qrCodeData.getAudioFile());
+    private void setQRCodeData(ContentData contentData) {
+        ((EditText) findViewById(R.id.editISBN)).setText(contentData.getIsbn());
+        ((EditText) findViewById(R.id.editAuthor)).setText(contentData.getAuthor());
+        ((EditText) findViewById(R.id.editBookName)).setText(contentData.getBookName());
+        ((EditText) findViewById(R.id.editLanguage)).setText(contentData.getLanguage());
+        ((EditText) findViewById(R.id.editAudioFile)).setText(contentData.getAudioFile());
 
-        ((EditText) findViewById(R.id.editPageNum)).setText(Integer.toString(qrCodeData.getPageNum()));
-        ((EditText) findViewById(R.id.editLevel)).setText(Integer.toString(qrCodeData.getLevel()));
+        ((EditText) findViewById(R.id.editPageNum)).setText(Integer.toString(contentData.getPageNum()));
+        ((EditText) findViewById(R.id.editLevel)).setText(Integer.toString(contentData.getLevel()));
     }
 }

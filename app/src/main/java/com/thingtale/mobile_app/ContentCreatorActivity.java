@@ -10,8 +10,8 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.thingtale.mobile_app.content.ContentData;
 import com.thingtale.mobile_app.content.Database;
-import com.thingtale.mobile_app.content.QRCodeData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class ContentCreatorActivity extends AppCompatActivity implements ContentListAdapter.ContentAdapterListener {
     private static final String TAG = ContentCreatorActivity.class.getSimpleName();
 
-    private List<QRCodeData> contentList;
+    private List<ContentData> contentList;
     private RecyclerView recyclerView;
 
     @Override
@@ -51,8 +51,8 @@ public class ContentCreatorActivity extends AppCompatActivity implements Content
             public boolean onQueryTextChange(String query) {
                 Pattern pattern = Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE);
 
-                List<QRCodeData> l = new ArrayList<>();
-                for (QRCodeData c : contentList) {
+                List<ContentData> l = new ArrayList<>();
+                for (ContentData c : contentList) {
                     Boolean match = false;
 
                     match |= pattern.matcher(c.getIsbn()).find();
@@ -83,10 +83,10 @@ public class ContentCreatorActivity extends AppCompatActivity implements Content
 
         //command = getIntent().getStringExtra(MainActivity.COMMAND);
 
-        //contentList = new QRCodeData[]{
-        //        new QRCodeData("isbn-foo", "bookName-foo", "author-foo", "language-foo", "audiofile-foo.mp3", 1, 1),
-        //        new QRCodeData("isbn-bar", "bookName-bar", "author-bar", "language-bar", "audiofile-bar.mp3", 3, 2),
-        //        new QRCodeData("isbn-baz", "bookName-baz", "author-baz", "language-baz", "audiofile-baz.mp3", 5, 3)
+        //contentList = new ContentData[]{
+        //        new ContentData("isbn-foo", "bookName-foo", "author-foo", "language-foo", "audiofile-foo.mp3", 1, 1),
+        //        new ContentData("isbn-bar", "bookName-bar", "author-bar", "language-bar", "audiofile-bar.mp3", 3, 2),
+        //        new ContentData("isbn-baz", "bookName-baz", "author-baz", "language-baz", "audiofile-baz.mp3", 5, 3)
         //};
         contentList = Database.load(getApplicationContext());
 
@@ -96,7 +96,7 @@ public class ContentCreatorActivity extends AppCompatActivity implements Content
     }
 
     @Override
-    public void onContentSelected(QRCodeData content) {
+    public void onContentSelected(ContentData content) {
         Intent intent = new Intent(ContentCreatorActivity.this, ContentEditActivity.class);
 
         // find id in global list (no just search result)

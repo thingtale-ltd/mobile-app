@@ -29,8 +29,8 @@ public class Database {
         return context.getFilesDir() + "/" + DB_FILENAME;
     }
 
-    public static List<QRCodeData> load(Context context) {
-        List<QRCodeData> contentList = new ArrayList<>();
+    public static List<ContentData> load(Context context) {
+        List<ContentData> contentList = new ArrayList<>();
 
         try {
             enforceDirectory(context);
@@ -41,7 +41,7 @@ public class Database {
                     continue;
                 }
 
-                QRCodeData c = QRCodeData.fromCSVLine(line);
+                ContentData c = ContentData.fromCSVLine(line);
                 if (c == null) {
                     Log.e(TAG, "could not read \"" + line + "\" csv line in content database. ignoring it.");
                     continue;
@@ -61,13 +61,13 @@ public class Database {
         return contentList;
     }
 
-    public static void save(Context context, List<QRCodeData> contentList) {
+    public static void save(Context context, List<ContentData> contentList) {
         try {
             enforceDirectory(context);
             final BufferedWriter bw = new BufferedWriter(new FileWriter(getFilePath(context)));
             bw.write("#isbn;bookname;author;language;audioFile;pageNum;level\n");
 
-            for (QRCodeData c : contentList) {
+            for (ContentData c : contentList) {
                 bw.write(c.toCSVLine() + "\n");
             }
 
