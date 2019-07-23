@@ -20,4 +20,10 @@
     <string name="book_isbn">Book ISBN</string>
     <string name="language">Language</string>
     <string name="title_activity_scanner">QRCode scanner</string>
+    <string name="audio_file_missing">audio file not found in database</string>
+    <string name="title_activity_reader">reading book</string>
+    <string name="page">page</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
 </resources>

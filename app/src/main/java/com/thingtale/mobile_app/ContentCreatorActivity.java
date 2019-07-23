@@ -88,7 +88,7 @@ public class ContentCreatorActivity extends AppCompatActivity implements Content
         //        new ContentData("isbn-bar", "bookName-bar", "author-bar", "language-bar", "audiofile-bar.mp3", 3, 2),
         //        new ContentData("isbn-baz", "bookName-baz", "author-baz", "language-baz", "audiofile-baz.mp3", 5, 3)
         //};
-        contentList = Database.load(getApplicationContext());
+        contentList = Database.load();
 
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -116,7 +116,7 @@ public class ContentCreatorActivity extends AppCompatActivity implements Content
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2) { // if edit activity returned
-            contentList = Database.load(getApplicationContext());
+            contentList = Database.load();
             ((ContentListAdapter) recyclerView.getAdapter()).setContentList(contentList);
         }
     }

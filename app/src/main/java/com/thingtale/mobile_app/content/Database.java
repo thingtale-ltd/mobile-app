@@ -1,6 +1,6 @@
 package com.thingtale.mobile_app.content;
 
-import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -18,23 +18,23 @@ public class Database {
     public static final String DB_FILENAME = CONTENT_DIR + "database.csv";
     private static final String TAG = Database.class.getSimpleName();
 
-    private static void enforceDirectory(Context context) {
-        File directory = new File(context.getFilesDir() + "/" + CONTENT_DIR);
+    private static void enforceDirectory() {
+        File directory = new File(Environment.getExternalStorageDirectory() + "/thingtale/" + CONTENT_DIR);
         if (!directory.exists()) {
-            directory.mkdir();
+            directory.mkdirs();
         }
     }
 
-    private static String getFilePath(Context context) {
-        return context.getFilesDir() + "/" + DB_FILENAME;
+    private static String getFilePath() {
+        return Environment.getExternalStorageDirectory() + "/thingtale/" + DB_FILENAME;
     }
 
-    public static List<ContentData> load(Context context) {
+    public static List<ContentData> load() {
         List<ContentData> contentList = new ArrayList<>();
 
         try {
-            enforceDirectory(context);
-            final BufferedReader br = new BufferedReader(new FileReader(getFilePath(context)));
+            enforceDirectory();
+            final BufferedReader br = new BufferedReader(new FileReader(getFilePath()));
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("#")) {
@@ -61,10 +61,28 @@ public class Database {
         return contentList;
     }
 
-    public static void save(Context context, List<ContentData> contentList) {
+    public static int findContent(List<ContentData> contentDataList, String strID) {
+        final String[] fields = strID.split(";");
+        if (fields.length != 2)
+            return -1;
+
+        final String isbn = fields[0];
+        final int pageNum = Integer.parseInt(fields[1]);
+
+        for (int i = 0; i < contentDataList.size(); i++) {
+            final ContentData c = contentDataList.get(i);
+
+            if (c.getIsbn().equals(isbn) && c.getPageNum() == pageNum)
+                return i;
+        }
+
+        return -1;
+    }
+
+    public static void save(List<ContentData> contentList) {
         try {
-            enforceDirectory(context);
-            final BufferedWriter bw = new BufferedWriter(new FileWriter(getFilePath(context)));
+            enforceDirectory();
+            final BufferedWriter bw = new BufferedWriter(new FileWriter(getFilePath()));
             bw.write("#isbn;bookname;author;language;audioFile;pageNum;level\n");
 
             for (ContentData c : contentList) {

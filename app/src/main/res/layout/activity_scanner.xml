@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:allow_frontcamera="true"
-        app:decode_interval="500"
-        app:reticle_fraction="0.9"
+        app:decode_interval="250"
+        app:reticle_fraction="0.8"
         app:use_flash="false" />
 
 </LinearLayout>

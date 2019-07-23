@@ -25,7 +25,7 @@ public class ContentEditActivity extends AppCompatActivity {
 
         try {
             int idx = getIntent().getExtras().getInt("content_idx");
-            ContentData c = Database.load(getApplicationContext()).get(idx);
+            ContentData c = Database.load().get(idx);
             setQRCodeData(c);
         } catch (NullPointerException e) {
             // no extra, ignoring
@@ -41,7 +41,7 @@ public class ContentEditActivity extends AppCompatActivity {
                     return;
                 }
 
-                List<ContentData> contentList = Database.load(getApplicationContext());
+                List<ContentData> contentList = Database.load();
 
                 try {
                     int idx = getIntent().getExtras().getInt("content_idx");
@@ -51,7 +51,7 @@ public class ContentEditActivity extends AppCompatActivity {
                     contentList.add(getQRCodeData());
                 }
 
-                Database.save(getApplicationContext(), contentList);
+                Database.save(contentList);
 
                 // notify edit finished
                 Intent returnIntent = new Intent();

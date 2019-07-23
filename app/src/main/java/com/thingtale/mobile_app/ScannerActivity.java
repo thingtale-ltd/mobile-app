@@ -1,6 +1,7 @@
 package com.thingtale.mobile_app;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.thingtale.mobile_app.content.ContentData;
+import com.thingtale.mobile_app.content.Database;
+
+import java.util.List;
+
 import de.klimek.scanner.OnCameraErrorCallback;
 import de.klimek.scanner.OnDecodedCallback;
 import de.klimek.scanner.ScannerView;
@@ -19,6 +25,7 @@ public class ScannerActivity extends AppCompatActivity implements OnDecodedCallb
     private static final String TAG = ScannerActivity.class.getSimpleName();
 
     private ScannerView scanner;
+
     private boolean cameraPermissionGranted;
 
     @Override
@@ -32,7 +39,7 @@ public class ScannerActivity extends AppCompatActivity implements OnDecodedCallb
         scanner.setOnDecodedCallback(this);
         scanner.setOnCameraErrorCallback(this);
 
-        // get permission
+        // get camera permission
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         cameraPermissionGranted = cameraPermission == PackageManager.PERMISSION_GRANTED;
         if (!cameraPermissionGranted) {
@@ -65,12 +72,36 @@ public class ScannerActivity extends AppCompatActivity implements OnDecodedCallb
 
     @Override
     public void onDecoded(String decodedData) {
-        Toast.makeText(this, decodedData, Toast.LENGTH_SHORT).show();
+        scanner.stopScanning();
+
+        final List<ContentData> listContent = Database.load();
+        final int idx = Database.findContent(listContent, decodedData);
+
+        if (idx < 0) {
+            final String errorMsg = "content not found in database";
+            Log.e(TAG, errorMsg);
+            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+
+            scanner.startScanning();
+        } else {
+            Intent intent = new Intent(ScannerActivity.this, ReaderActivity.class);
+            intent.putExtra("content_idx", idx);
+            startActivityForResult(intent, 3);
+        }
     }
 
     @Override
     public void onCameraError(Exception error) {
         Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
         Log.wtf(TAG, error.getMessage());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 3) { // if reader activity returned
+            scanner.startScanning();
+        }
     }
 }
