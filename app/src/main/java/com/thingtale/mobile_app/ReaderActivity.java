@@ -118,7 +118,7 @@ public class ReaderActivity extends AppCompatActivity {
         findViewById(R.id.btn_pause).setVisibility(View.VISIBLE);
 
         mediaPlayer.start();
-        seekbarUpdateHandler.postDelayed(seekbarUpdater, 0);
+        seekbarUpdateHandler.postDelayed(seekbarUpdater, 750);
     }
 
     private void stopMediaPlayer() {
