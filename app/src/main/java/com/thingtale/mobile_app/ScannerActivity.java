@@ -25,8 +25,9 @@ public class ScannerActivity extends AppCompatActivity implements OnDecodedCallb
     private static final String TAG = ScannerActivity.class.getSimpleName();
 
     private ScannerView scanner;
-
     private boolean cameraPermissionGranted;
+
+    private List<ContentData> listContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class ScannerActivity extends AppCompatActivity implements OnDecodedCallb
                     new String[]{Manifest.permission.CAMERA},
                     Permission.CAMERA);
         }
+
+        listContent = Database.load();
     }
 
     @Override
@@ -74,7 +77,6 @@ public class ScannerActivity extends AppCompatActivity implements OnDecodedCallb
     public void onDecoded(String decodedData) {
         scanner.stopScanning();
 
-        final List<ContentData> listContent = Database.load();
         final int idx = Database.findContent(listContent, decodedData);
 
         if (idx < 0) {
